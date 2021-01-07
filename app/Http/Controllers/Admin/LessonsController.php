@@ -14,33 +14,37 @@ use Illuminate\Http\Request;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 
-class LessonsController extends Controller
-{
+class LessonsController extends Controller {
     use MediaUploadingTrait;
 
-    public function index()
+    public function index(Request $request)
     {
-        abort_if(Gate::denies('lesson_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('lesson_access') , Response::HTTP_FORBIDDEN , '403 Forbidden');
 
-        $lessons = Lesson::with(['course', 'media'])->get();
+        $lessons = Lesson::whereIn('course_id', Course::ofTeacher()->pluck('id'));
+        if ($request->input('course_id'))
+            $lessons = $lessons->where('course_id',$request->input('course_id'));
+        $lessons = $lessons->with(['course' , 'media'])->get();
 
         $courses = Course::get();
 
-        return view('admin.lessons.index', compact('lessons', 'courses'));
+        return view('admin.lessons.index' , compact('lessons' , 'courses'));
     }
 
     public function create()
     {
-        abort_if(Gate::denies('lesson_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('lesson_create') , Response::HTTP_FORBIDDEN , '403 Forbidden');
 
-        $courses = Course::all()->pluck('title', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $courses = Course::ofTeacher()->get()->pluck('title' , 'id')->prepend(trans('global.pleaseSelect') , '');
 
-        return view('admin.lessons.create', compact('courses'));
+        return view('admin.lessons.create' , compact('courses'));
     }
 
     public function store(StoreLessonRequest $request)
     {
-        $lesson = Lesson::create($request->all());
+        $lesson = Lesson::create($request->all()
+            + ['position' => Lesson::where('course_id' , $request->course_id)
+                                   ->max('position') + 1]);
 
         if ($request->input('lesson_image', false)) {
             $lesson->addMedia(storage_path('tmp/uploads/' . $request->input('lesson_image')))->toMediaCollection('lesson_image');
@@ -54,14 +58,14 @@ class LessonsController extends Controller
             Media::whereIn('id', $media)->update(['model_id' => $lesson->id]);
         }
 
-        return redirect()->route('admin.lessons.index');
+        return redirect()->route('admin.lessons.index',['course_id'=>$request->course_id]);
     }
 
     public function edit(Lesson $lesson)
     {
         abort_if(Gate::denies('lesson_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $courses = Course::all()->pluck('title', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $courses = Course::ofTeacher()->get()->pluck('title' , 'id')->prepend(trans('global.pleaseSelect') , '');
 
         $lesson->load('course');
 
@@ -100,7 +104,7 @@ class LessonsController extends Controller
             }
         }
 
-        return redirect()->route('admin.lessons.index');
+        return redirect()->route('admin.lessons.index',['course_id'=>$request->course_id]);
     }
 
     public function show(Lesson $lesson)

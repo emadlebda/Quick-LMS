@@ -20,10 +20,6 @@
                 <thead>
                     <tr>
                         <th width="10">
-
-                        </th>
-                        <th>
-                            {{ trans('cruds.lesson.fields.id') }}
                         </th>
                         <th>
                             {{ trans('cruds.lesson.fields.course') }}
@@ -32,19 +28,7 @@
                             {{ trans('cruds.lesson.fields.title') }}
                         </th>
                         <th>
-                            {{ trans('cruds.lesson.fields.slug') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.lesson.fields.lesson_image') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.lesson.fields.short_text') }}
-                        </th>
-                        <th>
                             {{ trans('cruds.lesson.fields.position') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.lesson.fields.downloadable_files') }}
                         </th>
                         <th>
                             {{ trans('cruds.lesson.fields.is_free') }}
@@ -56,52 +40,13 @@
                             &nbsp;
                         </th>
                     </tr>
-                    <tr>
-                        <td>
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
-                        <td>
-                            <select class="search">
-                                <option value>{{ trans('global.all') }}</option>
-                                @foreach($courses as $key => $item)
-                                    <option value="{{ $item->title }}">{{ $item->title }}</option>
-                                @endforeach
-                            </select>
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
-                </thead>
+
+                </thead>s
                 <tbody>
                     @foreach($lessons as $key => $lesson)
                         <tr data-entry-id="{{ $lesson->id }}">
                             <td>
 
-                            </td>
-                            <td>
-                                {{ $lesson->id ?? '' }}
                             </td>
                             <td>
                                 {{ $lesson->course->title ?? '' }}
@@ -110,27 +55,7 @@
                                 {{ $lesson->title ?? '' }}
                             </td>
                             <td>
-                                {{ $lesson->slug ?? '' }}
-                            </td>
-                            <td>
-                                @if($lesson->lesson_image)
-                                    <a href="{{ $lesson->lesson_image->getUrl() }}" target="_blank" style="display: inline-block">
-                                        <img src="{{ $lesson->lesson_image->getUrl('thumb') }}">
-                                    </a>
-                                @endif
-                            </td>
-                            <td>
-                                {{ $lesson->short_text ?? '' }}
-                            </td>
-                            <td>
                                 {{ $lesson->position ?? '' }}
-                            </td>
-                            <td>
-                                @foreach($lesson->downloadable_files as $key => $media)
-                                    <a href="{{ $media->getUrl() }}" target="_blank">
-                                        {{ trans('global.view_file') }}
-                                    </a>
-                                @endforeach
                             </td>
                             <td>
                                 <span style="display:none">{{ $lesson->is_free ?? '' }}</span>
@@ -219,7 +144,7 @@
       $($.fn.dataTable.tables(true)).DataTable()
           .columns.adjust();
   });
-  
+
 let visibleColumnsIndexes = null;
 $('.datatable thead').on('input', '.search', function () {
       let strict = $(this).attr('strict') || false

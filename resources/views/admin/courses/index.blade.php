@@ -22,9 +22,7 @@
                         <th width="10">
 
                         </th>
-                        <th>
-                            {{ trans('cruds.course.fields.id') }}
-                        </th>
+
                         @if(auth()->user()->is_admin)
                         <th>
                             {{ trans('cruds.course.fields.teachers') }}
@@ -55,41 +53,6 @@
                             &nbsp;
                         </th>
                     </tr>
-                    <tr>
-                        <td>
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
-                        <td>
-                            <select class="search">
-                                <option value>{{ trans('global.all') }}</option>
-                                @foreach($users as $key => $item)
-                                    <option value="{{ $item->name }}">{{ $item->name }}</option>
-                                @endforeach
-                            </select>
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
                 </thead>
                 <tbody>
                     @foreach($courses as $key => $course)
@@ -97,9 +60,7 @@
                             <td>
 
                             </td>
-                            <td>
-                                {{ $course->id ?? '' }}
-                            </td>
+
                             @if(auth()->user()->is_admin)
                             <td>
                                 @foreach($course->teachers as $key => $item)
@@ -135,8 +96,8 @@
                             </td>
                             <td>
                                 @can('course_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.courses.show', $course->id) }}">
-                                        {{ trans('global.view') }}
+                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.lessons.index', ['course_id'=>$course->id]) }}">
+                                        {{ trans('cruds.lesson.title') }}
                                     </a>
                                 @endcan
 
