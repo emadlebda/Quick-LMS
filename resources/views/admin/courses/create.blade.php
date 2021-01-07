@@ -9,7 +9,7 @@
     <div class="card-body">
         <form method="POST" action="{{ route("admin.courses.store") }}" enctype="multipart/form-data">
             @csrf
-{{--            @if(auth()->user()->is_admin)--}}
+            @if(auth()->user()->is_admin)
             <div class="form-group">
                 <label for="teachers">{{ trans('cruds.course.fields.teachers') }}</label>
                 <div style="padding-bottom: 4px">
@@ -26,7 +26,7 @@
                 @endif
                 <span class="help-block">{{ trans('cruds.course.fields.teachers_helper') }}</span>
             </div>
-{{--            @endif--}}
+            @endif
             <div class="form-group">
                 <label class="required" for="title">{{ trans('cruds.course.fields.title') }}</label>
                 <input class="form-control {{ $errors->has('title') ? 'is-invalid' : '' }}" type="text" name="title" id="title" value="{{ old('title', '') }}" required>

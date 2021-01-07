@@ -21,7 +21,7 @@ class CoursesController extends Controller {
     {
         abort_if(Gate::denies('course_access') , Response::HTTP_FORBIDDEN , '403 Forbidden');
 
-        $courses = Course::with(['teachers' , 'media'])->get();
+        $courses = Course::ofTeacher()->with(['teachers' , 'media'])->get();
 
         $users = User::get();
 
@@ -32,11 +32,9 @@ class CoursesController extends Controller {
     {
         abort_if(Gate::denies('course_create') , Response::HTTP_FORBIDDEN , '403 Forbidden');
 
-//        $teachers = User::whereHas('roles' , function ($q) {
-//            $q->where('role_id' , '3');
-//        })->pluck('name' , 'id');
-        $teachers = User::all()->pluck('name' , 'id');
-
+        $teachers = User::whereHas('roles' , function ($q) {
+            $q->where('role_id' , '3');
+        })->pluck('name' , 'id');
 
         return view('admin.courses.create' , compact('teachers'));
     }
@@ -44,7 +42,8 @@ class CoursesController extends Controller {
     public function store(StoreCourseRequest $request)
     {
         $course = Course::create($request->all());
-        $course->teachers()->sync($request->input('teachers' , []));
+        $teachers = \Auth::user()->is_admin ? $request->input('teachers' , []) : [\Auth::user()->id];
+        $course->teachers()->sync($teachers);
 
         if ($request->input('course_image' , false)) {
             $course->addMedia(storage_path('tmp/uploads/' . $request->input('course_image')))->toMediaCollection('course_image');
@@ -71,8 +70,8 @@ class CoursesController extends Controller {
     public function update(UpdateCourseRequest $request , Course $course)
     {
         $course->update($request->all());
-        $course->teachers()->sync($request->input('teachers' , []));
-
+        $teachers = \Auth::user()->is_admin ? $request->input('teachers' , []) : [\Auth::user()->id];
+        $course->teachers()->sync($teachers);
         if ($request->input('course_image' , false)) {
             if ( ! $course->course_image || $request->input('course_image') !== $course->course_image->file_name) {
                 if ($course->course_image) {

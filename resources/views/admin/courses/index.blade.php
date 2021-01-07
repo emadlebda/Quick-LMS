@@ -25,9 +25,11 @@
                         <th>
                             {{ trans('cruds.course.fields.id') }}
                         </th>
+                        @if(auth()->user()->is_admin)
                         <th>
                             {{ trans('cruds.course.fields.teachers') }}
                         </th>
+                        @endif
                         <th>
                             {{ trans('cruds.course.fields.title') }}
                         </th>
@@ -98,11 +100,13 @@
                             <td>
                                 {{ $course->id ?? '' }}
                             </td>
+                            @if(auth()->user()->is_admin)
                             <td>
                                 @foreach($course->teachers as $key => $item)
                                     <span class="badge badge-info">{{ $item->name }}</span>
                                 @endforeach
                             </td>
+                            @endif
                             <td>
                                 {{ $course->title ?? '' }}
                             </td>
@@ -208,7 +212,7 @@
       $($.fn.dataTable.tables(true)).DataTable()
           .columns.adjust();
   });
-  
+
 let visibleColumnsIndexes = null;
 $('.datatable thead').on('input', '.search', function () {
       let strict = $(this).attr('strict') || false
