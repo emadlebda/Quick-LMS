@@ -20,7 +20,7 @@ class CourseFactory extends Factory {
 			'title'        => $title = $this->faker->sentence ,
 			'slug'         => \Str::slug($title) ,
 			'description'  => $this->faker->text ,
-			'price'        => $this->faker->randomFloat() ,
+			'price'        => $this->faker->randomFloat(2,0,199) ,
 			'is_published' => 1 ,
 		];
 	}
