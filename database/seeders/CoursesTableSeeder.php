@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Course;
+use App\Models\Lesson;
 use Illuminate\Database\Seeder;
 
 class CoursesTableSeeder extends Seeder {
@@ -13,11 +14,9 @@ class CoursesTableSeeder extends Seeder {
      */
     public function run()
     {
-        Course::factory()->count(5)->create();
-
-
-        foreach (Course::all() as $course) {
+        Course::factory()->count(5)->create()->each(function ($course) {
             $course->teachers()->sync([1]);
-        }
+            $course->courseLessons()->saveMany(Lesson::factory()->count(10)->create());
+        });
     }
 }
