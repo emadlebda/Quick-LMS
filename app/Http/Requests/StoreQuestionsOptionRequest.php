@@ -20,9 +20,6 @@ class StoreQuestionsOptionRequest extends FormRequest
             'option_text' => [
                 'required',
             ],
-            'is_correct'  => [
-                'required',
-            ],
         ];
     }
 }

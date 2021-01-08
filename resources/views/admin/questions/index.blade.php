@@ -22,9 +22,7 @@
                         <th width="10">
 
                         </th>
-                        <th>
-                            {{ trans('cruds.question.fields.id') }}
-                        </th>
+
                         <th>
                             {{ trans('cruds.question.fields.question') }}
                         </th>
@@ -38,32 +36,12 @@
                             &nbsp;
                         </th>
                     </tr>
-                    <tr>
-                        <td>
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
                 </thead>
                 <tbody>
                     @foreach($questions as $key => $question)
                         <tr data-entry-id="{{ $question->id }}">
                             <td>
 
-                            </td>
-                            <td>
-                                {{ $question->id ?? '' }}
                             </td>
                             <td>
                                 {{ $question->question ?? '' }}
@@ -157,7 +135,7 @@
       $($.fn.dataTable.tables(true)).DataTable()
           .columns.adjust();
   });
-  
+
 let visibleColumnsIndexes = null;
 $('.datatable thead').on('input', '.search', function () {
       let strict = $(this).attr('strict') || false

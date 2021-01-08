@@ -23,9 +23,6 @@
 
                         </th>
                         <th>
-                            {{ trans('cruds.test.fields.id') }}
-                        </th>
-                        <th>
                             {{ trans('cruds.test.fields.course') }}
                         </th>
                         <th>
@@ -47,56 +44,13 @@
                             &nbsp;
                         </th>
                     </tr>
-                    <tr>
-                        <td>
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
-                        <td>
-                            <select class="search">
-                                <option value>{{ trans('global.all') }}</option>
-                                @foreach($courses as $key => $item)
-                                    <option value="{{ $item->title }}">{{ $item->title }}</option>
-                                @endforeach
-                            </select>
-                        </td>
-                        <td>
-                            <select class="search">
-                                <option value>{{ trans('global.all') }}</option>
-                                @foreach($lessons as $key => $item)
-                                    <option value="{{ $item->title }}">{{ $item->title }}</option>
-                                @endforeach
-                            </select>
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
-                        <td>
-                            <select class="search">
-                                <option value>{{ trans('global.all') }}</option>
-                                @foreach($questions as $key => $item)
-                                    <option value="{{ $item->question }}">{{ $item->question }}</option>
-                                @endforeach
-                            </select>
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
+
                 </thead>
                 <tbody>
                     @foreach($tests as $key => $test)
                         <tr data-entry-id="{{ $test->id }}">
                             <td>
 
-                            </td>
-                            <td>
-                                {{ $test->id ?? '' }}
                             </td>
                             <td>
                                 {{ $test->course->title ?? '' }}
@@ -198,7 +152,7 @@
       $($.fn.dataTable.tables(true)).DataTable()
           .columns.adjust();
   });
-  
+
 let visibleColumnsIndexes = null;
 $('.datatable thead').on('input', '.search', function () {
       let strict = $(this).attr('strict') || false

@@ -22,9 +22,7 @@
                         <th width="10">
 
                         </th>
-                        <th>
-                            {{ trans('cruds.questionsOption.fields.id') }}
-                        </th>
+
                         <th>
                             {{ trans('cruds.questionsOption.fields.question') }}
                         </th>
@@ -38,37 +36,12 @@
                             &nbsp;
                         </th>
                     </tr>
-                    <tr>
-                        <td>
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
-                        <td>
-                            <select class="search">
-                                <option value>{{ trans('global.all') }}</option>
-                                @foreach($questions as $key => $item)
-                                    <option value="{{ $item->question }}">{{ $item->question }}</option>
-                                @endforeach
-                            </select>
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
                 </thead>
                 <tbody>
                     @foreach($questionsOptions as $key => $questionsOption)
                         <tr data-entry-id="{{ $questionsOption->id }}">
                             <td>
 
-                            </td>
-                            <td>
-                                {{ $questionsOption->id ?? '' }}
                             </td>
                             <td>
                                 {{ $questionsOption->question->question ?? '' }}
@@ -159,7 +132,7 @@
       $($.fn.dataTable.tables(true)).DataTable()
           .columns.adjust();
   });
-  
+
 let visibleColumnsIndexes = null;
 $('.datatable thead').on('input', '.search', function () {
       let strict = $(this).attr('strict') || false

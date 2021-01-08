@@ -20,9 +20,6 @@ class UpdateQuestionsOptionRequest extends FormRequest
             'option_text' => [
                 'required',
             ],
-            'is_correct'  => [
-                'required',
-            ],
         ];
     }
 }
