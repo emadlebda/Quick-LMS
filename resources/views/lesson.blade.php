@@ -16,8 +16,11 @@
         <div class="col-md-12">
             <h2>{{$lesson->title}}</h2>
 
-            {!! $lesson->full_text !!}
-
+            @if (($lesson->course->students()->where('user_id', auth()->id())->count() > 0) || ($lesson->is_free ==1))
+                {!! $lesson->full_text !!}
+            @else
+                <a href="{{route('courses.show',$lesson->course->slug)}}">Buy course to access full lessons</a>
+            @endif
 
             @if($previous_lesson)
                 <p>Previous lesson :
