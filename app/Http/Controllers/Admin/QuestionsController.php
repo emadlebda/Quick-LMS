@@ -89,7 +89,7 @@ class QuestionsController extends Controller {
     {
         abort_if(Gate::denies('question_show') , Response::HTTP_FORBIDDEN , '403 Forbidden');
 
-        $question->load('questionQuestionsOptions');
+        $question->load('options');
 
         return view('admin.questions.show' , compact('question'));
     }

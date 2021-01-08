@@ -22,6 +22,27 @@
                 <a href="{{route('courses.show',$lesson->course->slug)}}">Buy course to access full lessons</a>
             @endif
 
+            @if($lesson->test)
+                <hr>
+                <form action="" method="post">
+                    <h3 class="text-bold">Test: {{$lesson->test->title}}</h3>
+                    <br>
+                    @foreach($lesson->test->questions as $question)
+                        <b>{{$loop->iteration}}.{{$question->question}}</b>
+                        <br>
+                        @foreach($question->options as $option)
+                            <input type="radio" name="question_{{$question->id}}">
+                            {{$option->option_text}}
+                            <br>
+                        @endforeach
+                        <br>
+                        <br>
+                    @endforeach
+                    <input type="submit" value="submit results">
+                </form>
+                <hr>
+            @endif
+
             @if($previous_lesson)
                 <p>Previous lesson :
                     <a href="{{route('lessons.show',$previous_lesson->slug)}}">{{$previous_lesson->title}}</a>

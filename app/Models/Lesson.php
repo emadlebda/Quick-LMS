@@ -52,9 +52,9 @@ class Lesson extends Model implements HasMedia
         $this->addMediaConversion('preview')->fit('crop', 120, 120);
     }
 
-    public function lessonTests()
+    public function test()
     {
-        return $this->hasMany(Test::class, 'lesson_id', 'id');
+        return $this->hasOne(Test::class, 'lesson_id', 'id');
     }
 
     public function course()

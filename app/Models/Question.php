@@ -45,9 +45,14 @@ class Question extends Model implements HasMedia
         $this->addMediaConversion('preview')->fit('crop', 120, 120);
     }
 
-    public function questionQuestionsOptions()
+    public function options()
     {
         return $this->hasMany(QuestionsOption::class, 'question_id', 'id');
+    }
+
+    public function tests()
+    {
+        return $this->belongsToMany(Test::class,'question_test');
     }
 
     public function getQuestionImageAttribute()
