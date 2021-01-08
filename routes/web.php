@@ -3,8 +3,11 @@
 Route::get('/', 'HomeController@index');
 
 Route::get('course/{slug}', 'CoursesController@show')->name('courses.show');
-Route::get('lesson/{slug}', 'LessonsController@show')->name('lessons.show');
 Route::post('course/payment', 'CoursesController@payment')->name('courses.payment');
+
+
+Route::get('lesson/{slug}', 'LessonsController@show')->name('lessons.show');
+Route::post('lesson/{slug}/test', 'LessonsController@test')->name('lessons.test');
 
 
 Route::get('/home', function () {

@@ -10,8 +10,8 @@ class CreateCourseStudentsTable extends Migration {
         if ( ! Schema::hasTable('course_student')) {
             Schema::create('course_student' , function (Blueprint $table) {
 
-                $table->foreignId('user_id')->constrained();
-                $table->foreignId('course_id')->constrained();
+                $table->foreignId('user_id')->constrained('users');
+                $table->foreignId('course_id')->constrained('courses');
                 $table->timestamps();
             });
         }
