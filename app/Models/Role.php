@@ -13,8 +13,9 @@ class Role extends Model
 
     public $table = 'roles';
 
-    const ADMIN_ROLE=1;
-    const TEACHER_ROLE=2;
+    const ADMIN_ROLE = 1;
+    const TEACHER_ROLE = 2;
+    const STUDENT_ROLE = 3;
 
 
     protected $dates = [

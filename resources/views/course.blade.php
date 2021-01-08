@@ -1,9 +1,12 @@
 @extends('layouts.home')
 @section('content')
     <div class="row mb-5">
-        <a href="#">{{$course->title}}</a>
+        <h1 class="lead">{{$course->title}}</h1>
 
         {{$course->description}}
+
+        <a href="{{route('register')}}?redirect_url={{route('courses.show',$course->slug)}}"
+           class="btn btn-primary">Buy course ({{$course->price}}$)</a>
     </div>
 
     @foreach($course->publishedLessons as $lesson)
