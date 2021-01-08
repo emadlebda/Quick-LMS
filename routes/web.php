@@ -3,6 +3,7 @@
 Route::get('/', 'HomeController@index');
 
 Route::get('course/{slug}', 'CoursesController@show')->name('courses.show');
+Route::get('lesson/{slug}', 'LessonsController@show')->name('lessons.show');
 
 
 Route::get('/home', function () {

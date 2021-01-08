@@ -13,6 +13,10 @@ class Role extends Model
 
     public $table = 'roles';
 
+    const ADMIN_ROLE=1;
+    const TEACHER_ROLE=2;
+
+
     protected $dates = [
         'created_at',
         'updated_at',

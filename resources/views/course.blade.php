@@ -1,7 +1,7 @@
 @extends('layouts.home')
 @section('content')
     <div class="row mb-5">
-        <h2>{{$course->title}}</h2>
+        <a href="#">{{$course->title}}</a>
 
         {{$course->description}}
     </div>
@@ -14,7 +14,8 @@
                     @if($lesson->is_free)
                         (FREE!!)
                     @endif
-                    {{$lesson->title}}
+                    <a href="{{route('lessons.show',$lesson->slug)}}">{{$lesson->title}}</a>
+
                 </div>
                 <div class="card-body"><p>{{$lesson->short_text}}</p></div>
             </div>

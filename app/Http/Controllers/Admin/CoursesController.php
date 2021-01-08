@@ -8,6 +8,7 @@ use App\Http\Requests\MassDestroyCourseRequest;
 use App\Http\Requests\StoreCourseRequest;
 use App\Http\Requests\UpdateCourseRequest;
 use App\Models\Course;
+use App\Models\Role;
 use App\Models\User;
 use Gate;
 use Illuminate\Http\Request;
@@ -33,7 +34,7 @@ class CoursesController extends Controller {
         abort_if(Gate::denies('course_create') , Response::HTTP_FORBIDDEN , '403 Forbidden');
 
         $teachers = User::whereHas('roles' , function ($q) {
-            $q->where('role_id' , '3');
+            $q->where('role_id' , Role::TEACHER_ROLE);
         })->pluck('name' , 'id');
 
         return view('admin.courses.create' , compact('teachers'));
