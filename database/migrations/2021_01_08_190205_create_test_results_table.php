@@ -9,8 +9,8 @@ class CreateTestResultsTable extends Migration {
 	{
 		Schema::create('test_results' , function (Blueprint $table) {
 			$table->bigIncrements('id');
-            $table->foreignId('test_id')->constrained('tests');
-            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('test_id')->constrained('tests')->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->integer('test_result');
 			$table->timestamps();
 		});
