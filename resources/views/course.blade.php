@@ -6,8 +6,7 @@
             <h1 class="">{{$course->title}}</h1>
             <div class="text-danger float-right">Rating : {{$course->rating}} out of 5</div>
 
-
-            @if((auth()->check()) && ($course->students()->where('user_id', auth()->id())->count() > 0))
+            @if($purchased_course)
                 <span>Rate the course</span>
                 <form action="{{route('courses.rating',$course->id)}}" method="post">
                     @csrf
@@ -60,7 +59,7 @@
                     @if($lesson->is_free)
                         (FREE!!)
                     @endif
-                    <a href="{{route('lessons.show',$lesson->slug)}}">{{$lesson->title}}</a>
+                    <a href="{{route('lessons.show',[$lesson->course_id,$lesson->slug])}}">{{$lesson->title}}</a>
 
                 </div>
                 <div class="card-body"><p>{{$lesson->short_text}}</p></div>

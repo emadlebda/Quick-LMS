@@ -9,6 +9,8 @@ use App\Http\Requests\StoreQuestionRequest;
 use App\Http\Requests\UpdateQuestionRequest;
 use App\Models\Question;
 use App\Models\QuestionsOption;
+use App\Models\Test;
+use App\Models\TestResult;
 use Gate;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -30,13 +32,15 @@ class QuestionsController extends Controller {
     {
         abort_if(Gate::denies('question_create') , Response::HTTP_FORBIDDEN , '403 Forbidden');
 
-        return view('admin.questions.create');
+        $tests = Test::all()->pluck('title', 'id');
+        return view('admin.questions.create',compact('tests'));
     }
 
     public function store(StoreQuestionRequest $request)
     {
-        //return $request;
         $question = Question::create($request->all());
+        $question->tests()->sync($request->input('tests', []));
+
         for ($q = 1; $q <= 4; $q++) {
             $option = $request->input('option_text_' . $q , '');
             if ($option != '') {
@@ -62,8 +66,9 @@ class QuestionsController extends Controller {
     public function edit(Question $question)
     {
         abort_if(Gate::denies('question_edit') , Response::HTTP_FORBIDDEN , '403 Forbidden');
+        $tests = Test::all()->pluck('title', 'id');
 
-        return view('admin.questions.edit' , compact('question'));
+        return view('admin.questions.edit' , compact('question','tests'));
     }
 
     public function update(UpdateQuestionRequest $request , Question $question)
@@ -81,6 +86,8 @@ class QuestionsController extends Controller {
         } else if ($question->question_image) {
             $question->question_image->delete();
         }
+
+        $question->tests()->sync($request->input('tests', []));
 
         return redirect()->route('admin.questions.index');
     }

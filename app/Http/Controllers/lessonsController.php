@@ -9,9 +9,12 @@ use App\Models\TestResult;
 use Illuminate\Http\Request;
 
 class lessonsController extends Controller {
-    public function show($lesson_slug)
+    public function show($course_id,$lesson_slug)
     {
-        $lesson = Lesson::whereSlug($lesson_slug)->whereIsPublished(1)->firstOrFail();
+        $lesson = Lesson::whereSlug($lesson_slug)
+                        ->whereIsPublished(1)
+                        ->whereCourseId($course_id)
+                        ->firstOrFail();
 
         if (auth()->check() && ( $lesson->students()->where('users.id' , auth()->id())->count() == 0 ))
             $lesson->students()->attach(auth()->id());
@@ -31,7 +34,12 @@ class lessonsController extends Controller {
                              ->orderBy('position')
                              ->first();
 
-        return view('lesson' , compact('lesson' , 'previous_lesson' , 'next_lesson' , 'test_result'));
+        $purchased_course = $lesson->course->students()->where('user_id' , auth()->id())->count() > 0;
+        $test_exists = false;
+        if ($lesson->test && $lesson->test->questions->count() > 0)
+            $test_exists = true;
+
+        return view('lesson' , compact('lesson' , 'previous_lesson' , 'next_lesson' , 'test_result' , 'purchased_course','test_exists'));
     }
 
     /*
@@ -67,6 +75,6 @@ class lessonsController extends Controller {
         ]);
         $test_result->answers()->createMany($answers);
 
-        return redirect()->route('lessons.show' , $lesson_slug)->with('message' , 'Test score: ' . $test_score);
+        return redirect()->route('lessons.show' , [$lesson->course_id,$lesson_slug])->with('message' , 'Test score: ' . $test_score);
     }
 }

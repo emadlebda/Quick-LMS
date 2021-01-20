@@ -7,7 +7,7 @@ Route::post('course/payment', 'CoursesController@payment')->name('courses.paymen
 Route::post('course/{id}', 'CoursesController@rate')->name('courses.rating');
 
 
-Route::get('lesson/{slug}', 'LessonsController@show')->name('lessons.show');
+Route::get('lesson/{course_id}/{slug}', 'LessonsController@show')->name('lessons.show');
 Route::post('lesson/{slug}/test', 'LessonsController@test')->name('lessons.test');
 
 

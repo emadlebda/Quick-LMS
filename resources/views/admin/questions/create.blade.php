@@ -39,6 +39,20 @@
                 </div>
 
 
+                <div class="form-group">
+                    <label for="questions">{{ trans('cruds.test.title_singular') }}</label>
+                    <select class="form-control select2 {{ $errors->has('tests') ? 'is-invalid' : '' }}" name="tests[]" id="tests" multiple>
+                        @foreach($tests as $id => $test)
+                            <option value="{{ $id }}" {{ in_array($id, old('tests', [])) ? 'selected' : '' }}>{{ $test }}</option>
+                        @endforeach
+                    </select>
+                    @if($errors->has('tests'))
+                        <span class="text-danger">{{ $errors->first('tests') }}</span>
+                    @endif
+                    <span class="help-block">{{ trans('cruds.test.fields.questions_helper') }}</span>
+                </div>
+
+
 
 
                 @for($q =1;$q<=4;$q++)

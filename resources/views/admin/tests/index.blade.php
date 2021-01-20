@@ -65,9 +65,7 @@
                                 {{ $test->description ?? '' }}
                             </td>
                             <td>
-                                @foreach($test->questions as $key => $item)
-                                    <span class="badge badge-info">{{ $item->question }}</span>
-                                @endforeach
+                                {{$test->questions->count()}}
                             </td>
                             <td>
                                 <span style="display:none">{{ $test->is_published ?? '' }}</span>
