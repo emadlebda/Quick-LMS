@@ -12,11 +12,12 @@ class CoursesController extends Controller {
     public function show($course_slug)
     {
         $course = Course::whereSlug($course_slug)->with('publishedLessons')->whereIsPublished(1)->firstOrFail();
+
         return view('course' , compact('course'));
     }
 
 
-    public function payment(Request  $request)
+    public function payment(Request $request)
     {
         $course = Course::findOrFail($request->course_id);
 
@@ -24,23 +25,33 @@ class CoursesController extends Controller {
 
         $course->students()->attach(auth()->id());
 
-        return redirect()->back()->with('success','Payment completed successfully');
+        return redirect()->back()->with('success' , 'Payment completed successfully');
     }
+
     private function createStripeCharge($request)
     {
         Stripe::setApiKey(env('STRIPE_API_KEY'));
         try {
             $customer = Customer::create([
-                'email'=>$request->input('stripeEmail'),
-                'source'=>$request->input('stripeToken')
+                'email'  => $request->input('stripeEmail') ,
+                'source' => $request->input('stripeToken') ,
             ]);
             $charge = Charge::create([
-                'customer'=>$customer->id,
-                'amount'=>$request->amount,
-                'currency'=>'usd'
+                'customer' => $customer->id ,
+                'amount'   => $request->amount ,
+                'currency' => 'usd' ,
             ]);
-        }catch (\Exception $exception){
+        } catch (\Exception $exception) {
             return redirect()->back()->withErrors($exception)->send();
         }
+    }
+
+    public function rate(Request $request , $id)
+    {
+        $course = Course::findOrFail($id);
+        $course->students()->updateExistingPivot(auth()->id() , ['rating' => $request->get('rating')]);
+
+        return redirect()->back()->with('success' , 'Thank you for your rating !');
+
     }
 }

@@ -4,6 +4,7 @@ Route::get('/', 'HomeController@index');
 
 Route::get('course/{slug}', 'CoursesController@show')->name('courses.show');
 Route::post('course/payment', 'CoursesController@payment')->name('courses.payment');
+Route::post('course/{id}', 'CoursesController@rate')->name('courses.rating');
 
 
 Route::get('lesson/{slug}', 'LessonsController@show')->name('lessons.show');

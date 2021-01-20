@@ -13,6 +13,9 @@ class lessonsController extends Controller {
     {
         $lesson = Lesson::whereSlug($lesson_slug)->whereIsPublished(1)->firstOrFail();
 
+        if (auth()->check() && ( $lesson->students()->where('users.id' , auth()->id())->count() == 0 ))
+            $lesson->students()->attach(auth()->id());
+
         $test_result = null;
         if ($lesson->test)
             $test_result = TestResult::whereTestId($lesson->test->id)
@@ -28,7 +31,7 @@ class lessonsController extends Controller {
                              ->orderBy('position')
                              ->first();
 
-        return view('lesson' , compact('lesson' , 'previous_lesson' , 'next_lesson','test_result'));
+        return view('lesson' , compact('lesson' , 'previous_lesson' , 'next_lesson' , 'test_result'));
     }
 
     /*

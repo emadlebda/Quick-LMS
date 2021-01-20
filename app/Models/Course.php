@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -62,11 +63,14 @@ class Course extends Model implements HasMedia {
 
     public function teachers()
     {
-        return $this->belongsToMany(User::class,'course_user');
+        return $this->belongsToMany(User::class , 'course_user');
     }
+
     public function students()
     {
-        return $this->belongsToMany(User::class,'course_student')->withTimestamps();
+        return $this->belongsToMany(User::class , 'course_student')
+                    ->withTimestamps()
+                    ->withPivot('rating');
     }
 
     public function lessons()
@@ -76,7 +80,9 @@ class Course extends Model implements HasMedia {
 
     public function publishedLessons()
     {
-        return $this->hasMany(Lesson::class)->where('is_published' , '=' , 1)->orderBy('is_published');
+        return $this->hasMany(Lesson::class)
+                    ->where('is_published' , '=' , 1)
+                    ->orderBy('is_published');
     }
 
     public function getCourseImageAttribute()
@@ -99,7 +105,16 @@ class Course extends Model implements HasMedia {
 
     public function setStartDateAttribute($value)
     {
-        $this->attributes['start_date'] = $value ? Carbon::createFromFormat(config('panel.date_format') , $value)->format('Y-m-d') : null;
+        $this->attributes['start_date'] = $value ?
+            Carbon::createFromFormat(config('panel.date_format') , $value)->format('Y-m-d')
+            : null;
+    }
+
+    public function getRatingAttribute()
+    {
+        return number_format(DB::table('course_student')
+                               ->where('course_id' , $this->attributes['id'])
+                               ->average('rating'));
     }
 
 
